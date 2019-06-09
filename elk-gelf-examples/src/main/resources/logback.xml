@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method:%L - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+<!--    <appender name="gelf" class="biz.paluch.logging.gelf.log4j2">
+        <Field name="logger" pattern="%logger" />
+        <Field name="level" pattern="%level" />
+        <Field name="simpleClassName" pattern="%C{1}" />
+        <Field name="className" pattern="%C" />
+        <Field name="server" pattern="%host" />
+    </appender>-->
+
+    <!-- see: https://logging.paluch.biz/examples/log4j-1.2.x.html-->
+    <!-- host 必填，其余选填-->
+    <appender name="gelf" class="biz.paluch.logging.gelf.logback.GelfLogbackAppender">
+
+        <host>udp:127.0.0.1</host>
+        <port>18090</port>
+        <version>1.1</version>
+
+        <!-- es-document中的host，不同于source_host -->
+        <originHost>192.168.0.1</originHost>
+
+        <extractStackTrace>true</extractStackTrace>
+        <filterStackTrace>true</filterStackTrace>
+
+        <includeLocation>true</includeLocation>
+
+        <mdcProfiling>true</mdcProfiling>
+
+        <facility>elk-gelf-application</facility>
+        <!--<threshold>INFO</threshold>-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+
+        <additionalFields>fieldName1=fieldValue1,fieldName2=2.0</additionalFields>
+        <additionalFieldTypes>fieldName1=String,fieldName2=Double,fieldName3=Long</additionalFieldTypes>
+
+        <mdcFields>mdcField1,mdcField2</mdcFields>
+        <dynamicMdcFields>mdc.*,(mdc|MDC)fields</dynamicMdcFields>
+        <includeFullMdc>true</includeFullMdc>
+
+        <timestampPattern>yyyy-MM-dd HH:mm:ss.SSS</timestampPattern>
+        <maximumMessageSize>8192</maximumMessageSize>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="gelf"/>
+    </root>
+</configuration>

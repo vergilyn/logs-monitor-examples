@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: elk-gelf-application
+
+logging:
+  config: classpath:logback.xml
