@@ -25,6 +25,7 @@ public class ELKGelfApplication implements CommandLineRunner {
 
         ScheduledThreadPoolExecutor scheduled = new ScheduledThreadPoolExecutor(1);
 
+
         scheduled.scheduleAtFixedRate((Runnable) () -> {
             log.debug("debug message!");
             log.info("info message!");

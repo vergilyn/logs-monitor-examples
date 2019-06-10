@@ -18,7 +18,6 @@
     <!-- see: https://logging.paluch.biz/examples/log4j-1.2.x.html-->
     <!-- host 必填，其余选填-->
     <appender name="gelf" class="biz.paluch.logging.gelf.logback.GelfLogbackAppender">
-
         <host>udp:127.0.0.1</host>
         <port>18090</port>
         <version>1.1</version>
@@ -39,14 +38,14 @@
             <level>INFO</level>
         </filter>
 
-        <additionalFields>fieldName1=fieldValue1,fieldName2=2.0</additionalFields>
-        <additionalFieldTypes>fieldName1=String,fieldName2=Double,fieldName3=Long</additionalFieldTypes>
+        <additionalFields>index_name=%d{yyyy-MM},fieldName2=2.0</additionalFields>
+        <additionalFieldTypes>index_name=String,fieldName2=Double,fieldName3=Long</additionalFieldTypes>
 
         <mdcFields>mdcField1,mdcField2</mdcFields>
         <dynamicMdcFields>mdc.*,(mdc|MDC)fields</dynamicMdcFields>
         <includeFullMdc>true</includeFullMdc>
 
-        <timestampPattern>yyyy-MM-dd HH:mm:ss.SSS</timestampPattern>
+        <timestampPattern>yyyy-MM-dd HH:mm:ss,SSS</timestampPattern>
         <maximumMessageSize>8192</maximumMessageSize>
     </appender>
 

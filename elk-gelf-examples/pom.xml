@@ -17,7 +17,6 @@
             <artifactId>logstash-gelf</artifactId>
             <version>1.13.0</version>
         </dependency>
-
     </dependencies>
 
 </project>

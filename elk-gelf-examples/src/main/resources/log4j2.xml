@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!-- status log4j2内部日志级别 -->
+<configuration status="INFO">
+    <!-- 全局参数 -->
+    <Properties>
+        <property name="log.basedir">logs</property>
+        <Property name="pattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] log4j%X{context} -  %5p [%15.15t] %40.40c{1.} : %m%n</Property>
+        <Property name="displayName">elk-gelf-application</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- 文件 每次运行程序会自动清空，由append属性决定 -->
+        <File name="error" fileName="${log.basedir}/${displayName}_${hostName}_error.log" append="false">
+            <!-- 指定error 级别的日志 -->
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+        </File>
+
+        <!-- 滚动文件 -->
+        <RollingFile name="rollingFile" fileName="${log.basedir}/${displayName}_${hostName}.log"
+                     filePattern="${displayName}_%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <!-- 按大小划分 -->
+            <SizeBasedTriggeringPolicy size="50 MB" />
+        </RollingFile>
+
+        <Gelf name="logstash-gelf" host="udp:127.0.0.1" port="18090" version="1.1" ignoreExceptions="true">
+            <Field name="timestamp" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}" />
+            <Field name="logger" pattern="%logger" />
+            <Field name="level" pattern="%level" />
+            <Field name="simpleClassName" pattern="%C{1}" />
+            <Field name="className" pattern="%C" />
+            <Field name="server" pattern="%host" />
+            <Field name="index_name" pattern="%d{yyyy-MM.HH}" />
+        </Gelf>
+    </Appenders>
+
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="console"/>
+           <!-- <AppenderRef ref="error"/>
+            <AppenderRef ref="rollingFile"/>-->
+            <AppenderRef ref="logstash-gelf" />
+        </Root>
+    </Loggers>
+</configuration>

@@ -3,4 +3,4 @@ spring:
     name: elk-gelf-application
 
 logging:
-  config: classpath:logback.xml
+  config: classpath:log4j2.xml
