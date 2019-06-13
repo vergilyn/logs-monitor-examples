@@ -1,6 +1,52 @@
 # logs-monitor-examples
 
 
+日志采集方案
+1. logstash-file -> elasticsearch
+
+2. logstash-file + logstash-gelf -> elasticsearch
+
+3. filebeat -> [logstash] -> elasticsearch
+ 可以引入 logstash 对filebeat采集的message进行解析/过滤，然后保存到elasticsearch
+ 
+4. mq + logstash/filebeat + elasticsearch
+还不是很理解为什么需要 MQ （解耦、异步、削峰）？
+
+## Elastic Beats framework
+- [Elastic Beats framework](https://www.elastic.co/cn/products/beats)
+
+Elastic Beats 平台集合了多种单一用途数据采集器。
+它们从成百上千或成千上万台机器和系统向 Logstash 或 Elasticsearch 发送数据。
+
+| beat          |        type      |
+|---------------|------------------|
+| Filebeat      | 日志文件          |
+| Metricbeat    | 指标              |
+| Packetbeat    | 网络数据           |
+| Winlogbeat    | Windows 事件日志   |
+| Auditbeat     | 审计数据           |
+| Heartbeat     | 运行时间监控       |
+| Functionbeat  | 无需服务器的采集器  |
+
+
+### `logstash-input-file`已经可以很简单时间日志采集，为什么还需要`logstash-filebeat`？
+- [filebeat overview](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-overview.html)
+
+![filebeat](https://www.elastic.co/guide/en/beats/filebeat/current/images/filebeat.png)
+
+通常，要么filebeat直接发送给elasticsearch。或者filebeat发送给logstash，logstash做额外处理后再发送给elasticsearch。
+
+```
+
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  hosts: ["127.0.0.1:5044"]
+  
+# For this configuration, you must load the index template into Elasticsearch manually 
+# because the options for auto loading the template are only available for the Elasticsearch output.
+```
+
+
 [logstash sprintf-format](https://www.elastic.co/guide/en/logstash/7.1/event-dependent-configuration.html#sprintf)
 
   
