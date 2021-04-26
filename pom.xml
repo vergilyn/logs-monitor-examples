@@ -39,7 +39,7 @@
         <google-guava.version>24.1-jre</google-guava.version>
         <alibaba-fastjson.version>1.2.54</alibaba-fastjson.version>
         <apache-common-lang3.version>3.5</apache-common-lang3.version>
-        <apache-common-io.version>2.6</apache-common-io.version>
+        <apache-common-io.version>2.7</apache-common-io.version>
         <apache-common-pool2.version>2.6.1</apache-common-pool2.version>
 
         <!-- spring-data-elasticsearch 3.2.X 对应 elasticsearch 6.5.0 -->
