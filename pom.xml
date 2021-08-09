@@ -44,7 +44,7 @@
 
         <!-- spring-data-elasticsearch 3.2.X 对应 elasticsearch 6.5.0 -->
         <spring-boot-elasticsearch.version>3.2.0.SNAPSHOT</spring-boot-elasticsearch.version>
-        <rest.high.level.client.version>6.4.1</rest.high.level.client.version>
+        <rest.high.level.client.version>6.8.17</rest.high.level.client.version>
 
         <testng.version>6.14.2</testng.version>
     </properties>
